@@ -74,6 +74,6 @@ static void __exit hook_exit(void){
 
 module_init(hook_init);
 module_exit(hook_exit);
-MODULE_LICENSE("APACHE");
+MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Vaibhav Khanduja <vaibhavkhanduja@gmail.com>");
 MODULE_DESCRIPTION("Container Protection Service");
