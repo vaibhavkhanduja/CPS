@@ -15,8 +15,8 @@
 # limitations under the License
 
 NAME		:= cps
-#KDIR		?= /lib/modules/$(shell uname -r)/build
-KDIR		?= /usr/src/kernels/linux
+KDIR		?= /lib/modules/$(shell uname -r)/build
+#KDIR		?= /usr/src/kernels/linux
 
 ccflags-y	:= -g -Wall -nostdinc
 ldflags-y	:= -T$(src)/sections.lds

@@ -40,7 +40,11 @@ asmlinkage void hooked_sys_pre_read(unsigned int fd, char __user *buf, size_t co
 	i->pname = current->comm;
 	i->pid = current->pid;
 	i->operation = "READ";
+#if LINUX_VERSION_CODE > KERNEL_VERSION(4,0,0)
 	i->proc_inum = task_active_pid_ns(current)->ns.inum;
+#else
+	i->proc_inum = task_active_pid_ns(current)->proc_inum;
+#endif
 	i->devid = device_id_from_fd(fd);
 	i->path = path_from_fd(fd);
 
@@ -91,7 +95,11 @@ asmlinkage void hooked_sys32_pre_read(unsigned int fd, char __user *buf, size_t 
 	i->pid = current->pid;
 	i->operation = "READ32";
 	i->path = path_from_fd(fd);
+#if LINUX_VERSION_CODE > KERNEL_VERSION(4,0,0)
 	i->proc_inum = task_active_pid_ns(current)->ns.inum;
+#else
+	i->proc_inum = task_active_pid_ns(current)->proc_inum;
+#endif
 	i->devid = device_id_from_fd(fd);
 
 	return;
