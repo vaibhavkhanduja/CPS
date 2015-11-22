@@ -40,11 +40,16 @@ func eventCallback(event *dockerclient.Event, args ...interface{}) {
 	log.Printf("Received event: %#v\n", *event)
 }
 
-func main() {
-  _, err := containerconnect.CreateClient()
+func startDockerThread() {
+  docker, err := containerconnect.CreateClient()
   if err != nil {
 	log.Fatal(err)
   }
+  docker.StartMonitorEvents(eventCallback)
+  time.Sleep(3600 * time.Second)
+}
+
+func startCPSWatchdog() {
   cmd := cmdexe.CreateCommand(cps_watchdog)
   if cmd == nil {
     log.Printf("Could not locate cps watchdog")
@@ -55,5 +60,8 @@ func main() {
     log.Printf("Could not run cps watchdog")
   }
   log.Printf(out);
+}
+
+func main() {
 }
 
