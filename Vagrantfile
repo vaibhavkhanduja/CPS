@@ -71,5 +71,8 @@ Vagrant.configure(2) do |config|
     sudo apt-get install -y -q lxc-docker
     sudo apt-get install -y -q linux-headers-generic
     sudo apt-get install -y -q pkg-config
+    sudo apt-get install -y -q gdb
+    curl -O -k https://storage.googleapis.com/golang/go1.4.1.linux-amd64.tar.gz
+    sudo tar -C /usr/local/ -xzf go1.4.1.linux-amd64.tar.gz
   SHELL
 end

@@ -21,9 +21,9 @@ CFLAGS	=	-g -Wall -Wextra -Werror -std=gnu89
 
 LDLIBS	=	$(shell pkg-config --silence-errors --libs libkmod)
 LDLIBS	+=	$(shell pkg-config --silence-errors --libs ncurses)
-OBJS	=	../common/mem_ops.o ../common/deserialize.o ../common/string_utils.o netlink.o utils.o watchdog.o
-SOURCES	=	watchdog.c
-DESTS	=	../../bin/watchdog
+OBJS	=	../common/mem_ops.o ../common/deserialize.o ../common/string_utils.o netlink.o utils.o cps_receiver.o
+SOURCES	=	cps_receiver.c
+DESTS	=	../../bin/cps_receiver
 
 KMOD	=	$(shell pkg-config --exists libkmod && echo "1" || echo "0")
 
@@ -41,5 +41,5 @@ else
 OBJS += lkm.o
 endif
 
-../../bin/watchdog: $(OBJS)
+../../bin/cps_receiver: $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
