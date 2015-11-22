@@ -16,30 +16,17 @@
 # limitations under the License.
 #
 
-CC		=	gcc
-CFLAGS	=	-g -Wall -Wextra -Werror -std=gnu89
+SUBDIRS = cps_receiver cps_service
+SUBCLEAN = $(addsuffix .clean,$(SUBDIRS))
 
-LDLIBS	=	$(shell pkg-config --silence-errors --libs libkmod)
-LDLIBS	+=	$(shell pkg-config --silence-errors --libs ncurses)
-OBJS	=	../common/mem_ops.o ../common/deserialize.o ../common/string_utils.o netlink.o utils.o cps_receiver.o
-SOURCES	=	cps_receiver.c
-DESTS	=	../../bin/cps_receiver
+.PHONY: clean $(SUBDIRS)
 
-KMOD	=	$(shell pkg-config --exists libkmod && echo "1" || echo "0")
+all: $(SUBDIRS)
 
-new: clean all
+clean: $(SUBCLEAN)
 
-clean:
-	@rm -rf *.o */*.o ../common/*.o $(DESTS)
+$(SUBDIRS):
+	$(MAKE) -C $@
 
-all: _check_kmod $(DESTS)
-
-_check_kmod:
-ifeq ($(KMOD), 0)
-CFLAGS += -D__NO_KMOD__
-else
-OBJS += lkm.o
-endif
-
-../../bin/cps_receiver: $(OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+$(SUBCLEAN): %.clean:
+	$(MAKE) -C $* clean
