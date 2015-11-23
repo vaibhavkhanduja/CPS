@@ -28,11 +28,11 @@ export CCODE_PATH
 
 default: build
 
-build: fmt 
+build: fmt
 	$(GOCMD) get -d ./...
-	$(GOBUILD) $(FLAG_OBJ) ./bin/cps_service $(FLAGS) ./src/
+	$(GOBUILD) $(FLAG_OBJ) ../../../bin/cps_service $(FLAGS) ./src/
 clean:
-	\rm ./bin/cps_service
+	\rm ../../../bin/cps_service
 doc:
 	godoc -http=:6060 -index
 

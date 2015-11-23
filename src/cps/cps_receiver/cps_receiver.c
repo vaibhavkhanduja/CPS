@@ -23,7 +23,7 @@ syscall_intercept_info_node *head, *curr, *tail;
 
 void log_data(syscall_intercept_info_node *in) {
    while (in != head) {
-     fprintf(stdout,"%u:%u:%u:%s\n", (unsigned)time(NULL), in->i->proc_inum, in->i->pid, in->i->path);
+     fprintf(stdout,"{\"timestamp\":%u, \"inode\":%u, \"pid\":%u, \"path\":\"%s\"}\n", (unsigned)time(NULL), in->i->proc_inum, in->i->pid, in->i->path);
      in = in->prev;
    }
 }
@@ -101,12 +101,14 @@ int main(int argc, char **argv){
    	printf("Error adding socket fd to epoll\n");
 	return -1;
     }
+    #if 0
     event.data.fd = stdin_fd;
     event.events = EPOLLIN;
     if (epoll_ctl(efd, EPOLL_CTL_ADD, stdin_fd, &event) == -1){
       printf("Error adding stdin fd to epoll\n");
       return -1;
     }
+   #endif
    head = new(sizeof(syscall_intercept_info_node));
    if (!head){
      printf("Error allocating memory for data list\n");

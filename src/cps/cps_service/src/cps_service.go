@@ -25,10 +25,12 @@ import (
 	"fmt"
 	"github.com/vaibhavkhanduja/dockerclient"
 	"log"
+        "time"
 	"os"
+        "bufio"
 ) 
 
-const cps_watchdog string = "/usr/local/cps/bin/cps_watchdog"
+const cps_receiver string = "/vagrant/bin/cps_receiver"
 
 var Usage = func() {
 	fmt.Fprintf(os.Stderr, "Usage of cps_service\n")
@@ -49,19 +51,30 @@ func startDockerThread() {
   time.Sleep(3600 * time.Second)
 }
 
-func startCPSWatchdog() {
-  cmd := cmdexe.CreateCommand(cps_watchdog)
+func startCPSReceiver() {
+  cmd := cmdexe.CreateCommand(cps_receiver)
   if cmd == nil {
-    log.Printf("Could not locate cps watchdog")
+    log.Printf("Could not locate cps receiver")
   }
-
-  out, err := cmdexe.RunGetOutput(*cmd)
-  if err != nil {
-    log.Printf("Could not run cps watchdog")
+  stdout, err := cmd.StdoutPipe()
+  if  err != nil {
+    log.Fatal(err)
   }
-  log.Printf(out);
+  if err = cmd.Start(); err != nil {
+    log.Fatal(err)
+  }
+  defer cmd.Wait()  // Doesn't block
+  go func() {
+   scanner := bufio.NewScanner(stdout)
+   for scanner.Scan() {
+     line := scanner.Text()
+     fmt.Printf("%s\n", line)
+   }
+  }()
 }
 
 func main() {
+ go startDockerThread();
+ startCPSReceiver();
 }
 

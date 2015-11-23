@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -19,12 +19,12 @@
 package cmdexe
 
 import (
-	"bytes"
 	"fmt"
 	"log"
-	"os/exec"
+        "bufio"
+        "os/exec"
+        "io"
 	"runtime"
-	"strings"
 )
 
 func CreateCommand(exe string, s ...string) *exec.Cmd {
@@ -56,16 +56,22 @@ func CheckCommand(cmd string) (err error) {
 	return err
 }
 
-func RunGetOutput(cmd exec.Cmd) (output string, err error) {
-	var buff bytes.Buffer
-	cmd.Stdout = &buff
-	if err = cmd.Start(); err != nil {
-		return "", err
-	}
-	if err = cmd.Wait(); err != nil {
-		return "", err
-	}
-	output = buff.String()
-	t := strings.TrimSpace(output)
-	return t, err
+func RunGetOutput(cmd exec.Cmd) (stdout io.ReadCloser, err error) {
+    // Create stdout, stderr streams of type io.Reader
+    stdout, err = cmd.StdoutPipe()
+    if  err != nil {
+      log.Fatal(err)
+    } 
+    if err = cmd.Start(); err != nil {
+      log.Fatal(err)
+    }
+   defer cmd.Wait()  // Doesn't block
+   go func() {
+    scanner := bufio.NewScanner(stdout)
+    for scanner.Scan() {
+       line := scanner.Text()
+       fmt.Printf("%s\n", line)
+       }
+   }()
+   return stdout, err
 }
