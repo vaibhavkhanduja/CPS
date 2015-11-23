@@ -27,6 +27,7 @@ import (
 	"log"
         "time"
 	"os"
+        "strings"
         "bufio"
 ) 
 
@@ -68,7 +69,12 @@ func startCPSReceiver() {
    scanner := bufio.NewScanner(stdout)
    for scanner.Scan() {
      line := scanner.Text()
-     fmt.Printf("%s\n", line)
+     if !strings.Contains(line, "/dev") &&
+        !strings.Contains(line, "socket") &&
+        !strings.Contains(line, "pipe")  &&
+        !strings.Contains(line, "proc")  {
+       fmt.Printf("%s\n", line)
+     }
    }
   }()
 }
