@@ -22,7 +22,8 @@ Vagrant.configure(2) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 5050, host: 5050 
+  config.vm.network "forwarded_port", guest: 5060, host: 5060 
+  config.vm.network "forwarded_port", guest: 9200, host: 9200
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -74,5 +75,11 @@ Vagrant.configure(2) do |config|
     sudo apt-get install -y -q gdb
     curl -O -k https://storage.googleapis.com/golang/go1.4.1.linux-amd64.tar.gz
     sudo tar -C /usr/local/ -xzf go1.4.1.linux-amd64.tar.gz
+    curl -O -k https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.1.0/elasticsearch-2.1.0.deb
+    sudo dpkg -i elasticsearch-2.1.0.deb
+    sudo sed -i  '/network.host:/a network.bind_host: _non_loopback_' /etc/elasticsearch/elasticsearch.yml
+    sudo apt-get install -y openjdk-7-jre-headless
+    sudo update-rc.d elasticsearch defaults 95 10
+    sudo /etc/init.d/elasticsearch start
   SHELL
 end
