@@ -356,7 +356,8 @@ ud_inp_init(struct ud *u)
   u->inp_ctr       = 0;
   u->inp_end       = 0;
   u->inp_peek      = UD_EOI;
-  UD_NON_STANDALONE(u->inp_file = NULL);
+//  UD_NON_STANDALONE(u->inp_file = NULL);
+  UD_NON_STANDALONE(u->inp_hook = NULL);
 }
 
 

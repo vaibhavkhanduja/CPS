@@ -79,7 +79,8 @@ char *path_from_fd(unsigned int fd){
 	path_get(&path);
 	spin_unlock(&files->file_lock);
 
-	tmp = (char *)__get_free_page(GFP_TEMPORARY);
+//	tmp = (char *)__get_free_page(GFP_TEMPORARY);
+	tmp = (char *)__get_free_page(GFP_KERNEL);
 	if(!tmp){
 		path_put(&path);
 		return rpathname;

@@ -46,7 +46,12 @@ static struct ctl_table state_table[] = {
 		.proc_handler = &proc_dointvec,
 		.data = &client_pid, .maxlen = sizeof(pid_t)
 	},
-	{ 0 }
+//	{ 0 }
+	{
+		.procname = NULL, .mode = 0,
+		.proc_handler = NULL,
+		.data = NULL, .maxlen = 0
+	}
 };
 
 static struct ctl_table cps_table[] = {
@@ -54,7 +59,11 @@ static struct ctl_table cps_table[] = {
 		.procname = "cps", .mode = 0555,
 		.child = state_table
 	},
-	{ 0 }
+//	{ 0 }
+	{
+		.procname = NULL, .mode = 0,
+		.child = NULL
+	}
 };
 
 int register_cps_controls(void){

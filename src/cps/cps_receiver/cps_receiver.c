@@ -67,20 +67,20 @@ int main(int argc, char **argv){
      case 0:
      case 'f':
        /* If this option set a flag, do nothing else now. */
-      if (long_options[option_index].flag != 0)
-        break;
-        printf ("option %s", long_options[option_index].name);
+       if (long_options[option_index].flag != 0)
+          break;
+       printf ("option %s", long_options[option_index].name);
        if (optarg)
           printf (" with arg %s", optarg);
-          printf ("\n");
-          break;
-      case '?':
-         /* getopt_long already printed an error message. */
-         break;
-      default:
-        abort ();
-        }
-    }
+       printf ("\n");
+       break;
+     case '?':
+          /* getopt_long already printed an error message. */
+       break;
+     default:
+       abort ();
+   }
+  }
     /*Initialize NetLink msg headers and get socket file descriptor*/
     sock_fd = net_init(&nlh, &iov);
     if (sock_fd == -1){
