@@ -24,11 +24,19 @@ ldflags-y	:= -T$(src)/sections.lds
 obj-m		:= $(NAME).o
 obj-y		:= syscalls/ ../udis86/libudis86/
 
-$(NAME)-y := main.o control.o sct_hook.o netlink.o utils.o \
+#$(NAME)-y := main.o control.o sct_hook.o netlink.o utils.o \
              udis_utils.o syscalls/built-in.o \
              ../common/mem_ops.o ../common/serialize.o
 
-$(NAME)-y += ../udis86/libudis86/built-in.o
+$(NAME)-y := main.o control.o sct_hook.o netlink.o utils.o \
+             udis_utils.o syscalls/built-in.a \
+             ../common/mem_ops.o ../common/serialize.o
+
+#$(NAME)-y += ../udis86/libudis86/built-in.o
+$(NAME)-y += ../udis86/libudis86/built-in.a \
+		../udis86/libudis86/decode.o \
+		../udis86/libudis86/itab.o \
+		../udis86/libudis86/udis86.o	
 
 $(NAME)-y	+= stubs.o
 

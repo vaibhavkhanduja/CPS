@@ -117,7 +117,8 @@ static void *create_stub(syscall_info_t *iter, void *stub){
 	unsigned char *bytecode;
 
 	stub_size = ud_get_stub_size(stub);
-	bytecode = __vmalloc(stub_size, GFP_KERNEL, PAGE_KERNEL_EXEC);
+//	bytecode = __vmalloc(stub_size, GFP_KERNEL, PAGE_KERNEL_EXEC);
+	bytecode = vmalloc(stub_size);
 	memcpy(bytecode, stub, stub_size);
 
 	//patch addrs

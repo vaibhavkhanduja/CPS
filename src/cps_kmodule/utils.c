@@ -69,7 +69,19 @@ char *path_from_fd(unsigned int fd){
 	strcpy(rpathname, "Err");
 
 	spin_lock(&files->file_lock);
+//	file = fcheck_files(files, fd);
+
+	/* 
+	 * Around 5.11 fcheck_xxx() was renamed to files_lookup_xxx() in order
+	 * to allow checking seaprately for sharing and holding RCU/file lock
+	 * separately. At the same time fcheck() was undefined
+	 */
+#ifdef fcheck
 	file = fcheck_files(files, fd);
+#else
+	file = files_lookup_fd_rcu(current->files, fd);
+#endif
+
 	if (!file) {
 		spin_unlock(&files->file_lock);
 		return rpathname;
@@ -119,7 +131,15 @@ dev_t device_id_from_fd(unsigned int fd) {
 	struct files_struct *files = current->files;
 
 	spin_lock(&files->file_lock);
+//	file = fcheck_files(files, fd);
+
+	/* The same as above */
+#ifdef fcheck
 	file = fcheck_files(files, fd);
+#else
+	file = files_lookup_fd_rcu(current->files, fd);
+#endif
+
 	if (!file) {
 		spin_unlock(&files->file_lock);
 		return device_id;
