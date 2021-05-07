@@ -1,1 +1,0 @@
-cmd_/mnt/d/work/projects/cps/CPS/src/cps_kmodule/modules.order := {   cat /mnt/d/work/projects/cps/CPS/src/cps_kmodule/syscalls/modules.order;   cat /mnt/d/work/projects/cps/CPS/src/cps_kmodule/../udis86/libudis86/modules.order;   echo /mnt/d/work/projects/cps/CPS/src/cps_kmodule/cps.ko; :; } | awk '!x[$$0]++' - > /mnt/d/work/projects/cps/CPS/src/cps_kmodule/modules.order

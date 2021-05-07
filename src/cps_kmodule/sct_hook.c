@@ -171,6 +171,8 @@ static int do_hook_calls(void *arg){
 #endif	
 	syscall_info_t *iter;
 
+/* This fails even an attempt to insmod */
+#if 0
 	for_each_syscall(iter){
 
 		add_syscalls_state_table_entry(iter->name, &iter->state);
@@ -186,6 +188,7 @@ static int do_hook_calls(void *arg){
 			sct_map[iter->__NR_] = create_stub(iter, &stub);
 		}
 	}
+#endif
 
 	return 0;
 }
@@ -230,6 +233,8 @@ out:
 static int do_unhook_calls(void *arg){
 	syscall_info_t *iter;
 
+/* This fails even an attempt to insmod */
+#if 0
 	for_each_syscall(iter){
 
 		cps_info("Unhook %s\n", iter->name);
@@ -242,6 +247,7 @@ static int do_unhook_calls(void *arg){
 			sct_map[iter->__NR_] = destroy_stub(iter, sct_map[iter->__NR_]);
 		}
 	}
+#endif
 
 	return 0;
 }

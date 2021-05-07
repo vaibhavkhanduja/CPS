@@ -1,1 +1,0 @@
-cmd_/mnt/d/work/projects/cps/CPS/src/cps_kmodule/cps.ko := ld -r -m elf_x86_64  --build-id=sha1  -T scripts/module.lds -o /mnt/d/work/projects/cps/CPS/src/cps_kmodule/cps.ko /mnt/d/work/projects/cps/CPS/src/cps_kmodule/cps.o /mnt/d/work/projects/cps/CPS/src/cps_kmodule/cps.mod.o;  true
